@@ -13,20 +13,12 @@ provider "aws" {
   region = "us-east-1"
 }
 
-/* resource "aws_key_pair" "key" {
-  key_name   = "awss-key"
-  public_key = file("./key-aws.pub")
-}  */
-
 resource "aws_instance" "vm" {
     ami           = var.instance_ami
     instance_type = var.instance_type
     key_name      = var.key_name
     user_data = file("init-script.sh")   
-    vpc_security_group_ids = ["${aws_security_group.ec2-sg.id}"]
-    /* depends_on = [
-        aws_db_instance.rds-tf
-    ] */
+    vpc_security_group_ids = ["${aws_security_group.ec2-sg.id}"]   
     associate_public_ip_address = true
 
     tags = {
@@ -57,6 +49,14 @@ ingress {
     description = "HTTPS to EC2"
     from_port   = 443
     to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = var.cidrs_acesso_remoto
+}
+
+ingress {
+    description = "HTTP"
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = var.cidrs_acesso_remoto
 }

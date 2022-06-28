@@ -13,4 +13,5 @@ override.tf.json
 
 aws-key*
 aws2-key*
+key-aws*
 terraform*

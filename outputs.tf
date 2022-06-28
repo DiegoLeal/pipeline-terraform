@@ -1,3 +1,3 @@
-output "vm_web_ip" {
+/* output "vm_web_ip" {
   value = aws_instance.web.public_ip
-}
+} */

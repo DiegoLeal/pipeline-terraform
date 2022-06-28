@@ -16,11 +16,9 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-variable "aws_pub_key" {
-  description = ""
-  type        = string
-} 
-
+variable "key_name" {
+  default = "terraform"
+}
 
 variable "cidrs_acesso_remoto" {
   type        = list(any)

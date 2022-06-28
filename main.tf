@@ -13,15 +13,10 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "aws_key_pair" "key" {
-  key_name = "aws-key"
-  public_key = var.aws_pub_key
-}
-
 resource "aws_instance" "web" {
   ami           = var.instance_ami
   instance_type = var.instance_type
-  key_name      = aws_key_pair.key.key_name
+  key_name      = var.key_name
   user_data     = file("init-script.sh")
 
   vpc_security_group_ids = ["${aws_security_group.tf-sg.id}"]
@@ -61,6 +56,14 @@ resource "aws_security_group" "tf-sg" {
     protocol    = "tcp"
     cidr_blocks = var.cidrs_acesso_remoto
   }
+
+  ingress {
+    description = "HTTP"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = var.cidrs_acesso_remoto
+}
 
   egress {
     from_port        = 0
